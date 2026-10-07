@@ -1,4 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import mermaid from 'mermaid'
+import ReactMarkdown from 'react-markdown'
 import './index.css'
 
 function App() {
@@ -6,6 +8,14 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (result?.mermaid_code) {
+      mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+      // Small timeout to ensure DOM is ready
+      setTimeout(() => mermaid.contentLoaded(), 100);
+    }
+  }, [result]);
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -92,21 +102,32 @@ function App() {
 
         {result && (
           <div className="dashboard">
-            <div className="glass-container" style={{ margin: 0 }}>
+            {result.image_url && (
+              <div className="glass-container" style={{ margin: '0 0 2rem 0', textAlign: 'center', padding: '1rem' }}>
+                <h3 style={{ marginBottom: '1rem', color: '#c084fc' }}>Course Visual</h3>
+                <img 
+                  src={result.image_url} 
+                  alt="Generated Course Cover" 
+                  style={{ width: '100%', maxHeight: '400px', objectFit: 'cover', borderRadius: '12px' }} 
+                />
+              </div>
+            )}
+            
+            <div className="glass-container" style={{ margin: '0 0 2rem 0' }}>
               <div className="markdown-body">
                 {/* Simple render of markdown for prototype */}
-                <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>
+                <ReactMarkdown>
                   {result.markdown_summary}
-                </pre>
+                </ReactMarkdown>
               </div>
             </div>
             
-            {result.image_url && (
-              <div className="glass-container" style={{ margin: 0, textAlign: 'center' }}>
-                <h3>Generated Canva Diagram</h3>
-                <a href={result.image_url} target="_blank" rel="noreferrer" style={{ color: '#8b5cf6' }}>
-                  Open Diagram in Canva
-                </a>
+            {result.mermaid_code && (
+              <div className="glass-container" style={{ margin: '0 0 2rem 0', textAlign: 'center' }}>
+                <h3 style={{ color: '#60a5fa' }}>Concept Flowchart</h3>
+                <div className="mermaid" style={{ marginTop: '1rem', background: 'rgba(255,255,255,0.05)', padding: '2rem', borderRadius: '12px' }}>
+                  {result.mermaid_code}
+                </div>
               </div>
             )}
             

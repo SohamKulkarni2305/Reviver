@@ -1,8 +1,8 @@
 import pytest
 from unittest.mock import patch, mock_open
-from backend.extractor import extract_text
+from extractor import extract_text
 
-@patch("backend.extractor.PdfReader")
+@patch("extractor.PdfReader")
 def test_extract_text(mock_pdf_reader):
     # Mock the behavior of PdfReader
     mock_pdf = mock_pdf_reader.return_value

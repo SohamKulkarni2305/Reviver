@@ -1,0 +1,16 @@
+node_modules/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+env/
+.env
+
+# Logs and Temp Files
+session.log
+temp_*.pdf
+
+# macOS
+.DS_Store

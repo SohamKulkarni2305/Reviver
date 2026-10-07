@@ -4,3 +4,4 @@ pytest
 httpx
 python-multipart
 PyPDF2
+google-antigravity
