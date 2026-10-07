@@ -23,11 +23,10 @@ async def generate_recap(file: UploadFile = File(...)):
         
     logging.info(f"Temporarily saved file to {temp_file_path}")
     
-    # Clean up temp file (for now just delete after saving)
+    from backend.workflow import run_agent_workflow
+    result = run_agent_workflow(temp_file_path)
+    
+    # Clean up temp file
     os.remove(temp_file_path)
     
-    # Dummy response as per plan
-    return {
-        "markdown_summary": "# Summary",
-        "image_url": ""
-    }
+    return result
